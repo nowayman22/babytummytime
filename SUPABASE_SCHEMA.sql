@@ -40,6 +40,23 @@ alter table babies         disable row level security;
 alter table tummy_sessions disable row level security;
 alter table daily_goals    disable row level security;
 
+-- ── Realtime (multi-device sync) ──────────────────────────
+-- Lets every device see the other's sessions instantly.
+-- Safe to re-run; ignore errors if already added.
+do $$
+begin
+  perform 1 from pg_publication_tables
+   where pubname = 'supabase_realtime' and tablename = 'tummy_sessions';
+  if not found then
+    alter publication supabase_realtime add table tummy_sessions;
+  end if;
+  perform 1 from pg_publication_tables
+   where pubname = 'supabase_realtime' and tablename = 'daily_goals';
+  if not found then
+    alter publication supabase_realtime add table daily_goals;
+  end if;
+end $$;
+
 -- ── Done ──────────────────────────────────────────────────
 -- You should now see 3 tables in your Supabase dashboard:
 --   babies, tummy_sessions, daily_goals

@@ -24,26 +24,74 @@ export default function App() {
   const [refreshKey, setRefreshKey]       = useState(0);
   const [loading, setLoading]             = useState(true);
 
-  // Load baby from local cache + Supabase
+  // Auto-discover baby from Supabase (works across all devices)
   useEffect(() => {
-    const babyId = localStorage.getItem('baby_id');
-    if (!babyId) { setLoading(false); setTab('settings'); return; }
+    (async () => {
+      const cachedId = localStorage.getItem('baby_id');
 
-    Promise.all([
-      supabase.from('babies').select('*').eq('id', babyId).single(),
-      supabase
+      const { data: babies } = await supabase
+        .from('babies')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (!babies || babies.length === 0) {
+        setLoading(false);
+        setTab('settings');
+        return;
+      }
+
+      // Prefer cached baby if it still exists, else use the first one (shared across devices)
+      const selected = babies.find(b => b.id === cachedId) ?? babies[0];
+      localStorage.setItem('baby_id', selected.id);
+      setBaby(selected);
+
+      const { data: goalRow } = await supabase
         .from('daily_goals')
         .select('*')
-        .eq('baby_id', babyId)
+        .eq('baby_id', selected.id)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single(),
-    ]).then(([babyRes, goalRes]) => {
-      if (babyRes.data) setBaby(babyRes.data);
-      if (goalRes.data) setGoal(goalRes.data);
+        .maybeSingle();
+
+      if (goalRow) setGoal(goalRow);
       setLoading(false);
-    });
+    })();
   }, []);
+
+  // Refresh data on window focus (so each device sees the other's progress)
+  useEffect(() => {
+    const onFocus = () => setRefreshKey(k => k + 1);
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, []);
+
+  // Realtime subscription — instant updates when the other device adds a session
+  useEffect(() => {
+    if (!baby) return;
+    const channel = supabase
+      .channel(`sessions:${baby.id}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'tummy_sessions', filter: `baby_id=eq.${baby.id}` },
+        () => setRefreshKey(k => k + 1),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'daily_goals', filter: `baby_id=eq.${baby.id}` },
+        async () => {
+          const { data } = await supabase
+            .from('daily_goals')
+            .select('*')
+            .eq('baby_id', baby.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (data) setGoal(data);
+        },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [baby]);
 
   const loadTodaySeconds = async (babyId: string) => {
     const today = new Date();
@@ -143,7 +191,7 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-t-border px-4 py-2 flex justify-between text-xs text-t-muted shrink-0">
         <span>SPACE to start / stop</span>
-        <span style={{ color: '#1a3a22' }}>babytummytime v0.1.0</span>
+        <span style={{ color: '#1a3a22' }}>babytummytime v0.2.0</span>
       </footer>
     </div>
   );
