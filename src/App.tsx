@@ -188,8 +188,9 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-t-border px-4 py-2 flex justify-between text-xs text-t-muted shrink-0">
-        <span>SPACE to start / stop</span>
-        <span style={{ color: '#1a3a22' }}>babytummytime v0.2.1</span>
+        <span className="hidden sm:inline">SPACE to start / stop</span>
+        <span className="sm:hidden">tap to track</span>
+        <span style={{ color: '#1a3a22' }}>v0.3.0</span>
       </footer>
     </div>
   );

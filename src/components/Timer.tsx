@@ -41,7 +41,7 @@ export default function Timer({ babyId, babyName, goalMinutes, todaySeconds, onS
       {/* Timer display */}
       <div className="text-center">
         <div
-          className="font-mono text-6xl tracking-widest px-8 py-4 border-2 rounded"
+          className="font-mono text-4xl sm:text-6xl tracking-widest px-4 sm:px-8 py-3 sm:py-4 border-2 rounded"
           style={{
             color:        isRunning ? '#00ff88' : '#556655',
             borderColor:  isRunning ? '#00ff88' : '#1a2e20',
@@ -92,7 +92,7 @@ export default function Timer({ babyId, babyName, goalMinutes, todaySeconds, onS
         <button
           onClick={toggle}
           disabled={!babyId}
-          className="px-12 py-4 rounded font-mono text-lg tracking-widest transition-all duration-200"
+          className="px-12 sm:px-16 py-5 sm:py-4 rounded font-mono text-xl sm:text-lg tracking-widest transition-all duration-200 active:scale-95"
           style={{
             background:   isRunning ? '#1a0a0a' : '#0a1a10',
             color:        isRunning ? '#ff4455' : '#00ff88',
@@ -105,9 +105,9 @@ export default function Timer({ babyId, babyName, goalMinutes, todaySeconds, onS
         </button>
       )}
 
-      {/* Spacebar hint */}
+      {/* Spacebar hint — desktop only (no physical keyboard on mobile) */}
       {!showNotes && (
-        <div className="text-t-muted text-xs tracking-widest">
+        <div className="hidden sm:block text-t-muted text-xs tracking-widest">
           or press <span className="border border-t-muted px-2 py-0.5 rounded text-xs">SPACE</span>
         </div>
       )}

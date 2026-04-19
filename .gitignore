@@ -1,6 +1,16 @@
 # Tauri build artifacts
 src-tauri/target/
 
+# Android build artifacts
+src-tauri/gen/android/.gradle/
+src-tauri/gen/android/build/
+src-tauri/gen/android/app/build/
+src-tauri/gen/android/local.properties
+
+# Android signing — NEVER commit secrets
+src-tauri/gen/android/*.keystore
+src-tauri/gen/android/keystore.properties
+
 # Packaging output
 packaging/arch/*.pkg.tar.zst
 packaging/arch/*.tar.gz

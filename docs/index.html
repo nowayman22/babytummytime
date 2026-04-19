@@ -3,30 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Baby Tummy Time — Arch Linux Repository</title>
+  <title>Baby Tummy Time — Downloads</title>
   <style>
-    body { background: #0a0a0a; color: #d4d4d4; font-family: monospace; max-width: 700px; margin: 60px auto; padding: 0 20px; line-height: 1.7; }
+    body { background: #0a0a0a; color: #d4d4d4; font-family: monospace; max-width: 720px; margin: 60px auto; padding: 0 20px; line-height: 1.7; }
     h1 { color: #00ff88; text-shadow: 0 0 10px #00ff8844; }
-    h2 { color: #00cc66; margin-top: 2em; }
-    code, pre { background: #111; border: 1px solid #1a2e20; border-radius: 4px; padding: 2px 6px; color: #00ff88; }
+    h2 { color: #00cc66; margin-top: 2em; border-bottom: 1px solid #1a2e20; padding-bottom: 6px; }
+    code, pre { background: #111; border: 1px solid #1a2e20; border-radius: 4px; padding: 2px 6px; color: #00ff88; font-size: 0.9em; }
     pre { padding: 16px; overflow-x: auto; }
     a { color: #44aaff; }
     .muted { color: #556655; }
+    .btn { display: inline-block; background: #0a1a10; border: 2px solid #00ff88; color: #00ff88; padding: 10px 20px; border-radius: 4px; text-decoration: none; margin: 8px 0; }
+    .btn:hover { background: #003311; }
   </style>
 </head>
 <body>
   <h1>♡ Baby Tummy Time</h1>
-  <p>Arch Linux pacman repository — install with a single command.</p>
+  <p>Cross-platform tummy time tracker. Sync data between devices via Supabase.</p>
 
-  <h2>Install</h2>
-  <p>1. Add the repo to <code>/etc/pacman.conf</code>:</p>
+  <h2>📱 Android</h2>
+  <p>Download the APK and install on your phone:</p>
+  <a class="btn" href="babytummytime-0.3.0.apk" download>⬇ Download APK (9.4 MB)</a>
+  <p class="muted">First-time installs need <em>"Install from unknown sources"</em> enabled in your phone's settings. Open the downloaded file and follow prompts.</p>
+
+  <h2>🐧 Arch Linux</h2>
+  <p>Add the repository to <code>/etc/pacman.conf</code>:</p>
   <pre>[babytummytime]
+SigLevel = Optional TrustAll
 Server = https://nowayman22.github.io/babytummytime/repo</pre>
 
-  <p>2. Sync and install:</p>
-  <pre>sudo pacman -Sy babytummytime</pre>
+  <p>Then sync and install:</p>
+  <pre>sudo pacman -Syu babytummytime</pre>
 
-  <h2>Source</h2>
+  <h2>📦 Source</h2>
   <p><a href="https://github.com/nowayman22/babytummytime">github.com/nowayman22/babytummytime</a></p>
 
   <p class="muted">Built with Tauri 2 + React + Supabase</p>

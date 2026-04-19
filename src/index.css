@@ -17,6 +17,16 @@ body {
   font-family: "JetBrains Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* Safe-area padding for mobile (notches, home indicator) */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top:    env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* Scrollbar */
