@@ -27,8 +27,6 @@ export default function App() {
   // Auto-discover baby from Supabase (works across all devices)
   useEffect(() => {
     (async () => {
-      const cachedId = localStorage.getItem('baby_id');
-
       const { data: babies } = await supabase
         .from('babies')
         .select('*')
@@ -40,8 +38,8 @@ export default function App() {
         return;
       }
 
-      // Prefer cached baby if it still exists, else use the first one (shared across devices)
-      const selected = babies.find(b => b.id === cachedId) ?? babies[0];
+      // ALWAYS use the oldest baby — the canonical record shared by all devices.
+      const selected = babies[0];
       localStorage.setItem('baby_id', selected.id);
       setBaby(selected);
 
@@ -191,7 +189,7 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-t-border px-4 py-2 flex justify-between text-xs text-t-muted shrink-0">
         <span>SPACE to start / stop</span>
-        <span style={{ color: '#1a3a22' }}>babytummytime v0.2.0</span>
+        <span style={{ color: '#1a3a22' }}>babytummytime v0.2.1</span>
       </footer>
     </div>
   );

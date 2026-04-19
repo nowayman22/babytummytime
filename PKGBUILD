@@ -1,6 +1,6 @@
 # Maintainer: nikits <nikits1993@gmail.com>
 pkgname=babytummytime
-pkgver=0.2.0
+pkgver=0.2.1
 pkgrel=1
 pkgdesc="Baby tummy time tracker with Supabase backend"
 arch=('x86_64')
