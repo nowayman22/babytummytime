@@ -1,0 +1,27 @@
+# Maintainer: nikits <nikits1993@gmail.com>
+pkgname=babytummytime
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Baby tummy time tracker with Supabase backend"
+arch=('x86_64')
+url="https://github.com/nikits/babytummytime"
+license=('MIT')
+depends=('webkit2gtk-4.1' 'gtk3')
+
+# Uses the pre-built binary from the project root
+source=()
+sha256sums=()
+
+package() {
+  # Binary
+  install -Dm755 "${startdir}/../../src-tauri/target/release/babytummytime" \
+    "${pkgdir}/usr/bin/babytummytime"
+
+  # Desktop entry (for app launcher integration)
+  install -Dm644 "${startdir}/../babytummytime.desktop" \
+    "${pkgdir}/usr/share/applications/babytummytime.desktop"
+
+  # Icon
+  install -Dm644 "${startdir}/../../src-tauri/icons/128x128.png" \
+    "${pkgdir}/usr/share/pixmaps/babytummytime.png"
+}

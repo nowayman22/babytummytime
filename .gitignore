@@ -1,0 +1,34 @@
+# Tauri build artifacts
+src-tauri/target/
+
+# Packaging output
+packaging/arch/*.pkg.tar.zst
+packaging/arch/*.tar.gz
+packaging/arch/*.sig
+packaging/arch/pkg/
+packaging/arch/src/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

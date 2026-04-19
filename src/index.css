@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+}
+
+body {
+  font-family: "JetBrains Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #1a2e20; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #003311; }
+
+/* Range input */
+input[type="range"] {
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+/* Textarea */
+textarea {
+  font-family: inherit;
+}
+
+/* Disable text selection globally (desktop app feel) */
+* {
+  user-select: none;
+}
+
+/* Allow selection in inputs/textareas */
+input, textarea {
+  user-select: text;
+}

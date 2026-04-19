@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Baby Tummy Time
+Comment=Track baby tummy time with daily stats
+Exec=babytummytime
+Icon=babytummytime
+Categories=Utility;
+Terminal=false
