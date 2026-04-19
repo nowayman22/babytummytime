@@ -44,6 +44,17 @@ export function createRemoteStore(ownerId: string): Store {
       return (data ?? []) as TummySession[];
     },
 
+    async getActiveSession(babyId) {
+      const { data, error } = await supabase
+        .from('tummy_sessions').select('*')
+        .eq('baby_id', babyId)
+        .is('ended_at', null)
+        .order('started_at', { ascending: false })
+        .limit(1).maybeSingle();
+      if (error) throw error;
+      return (data ?? null) as TummySession | null;
+    },
+
     async startSession(babyId) {
       const { data, error } = await supabase
         .from('tummy_sessions')

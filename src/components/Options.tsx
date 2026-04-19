@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { chime } from '../lib/sound';
 import AuthScreen from './AuthScreen';
 import HistoryEditor from './HistoryEditor';
 
@@ -11,6 +12,7 @@ export default function Options() {
     setActiveBaby, signOut,
     pendingMigration, migrationBusy, migrationError,
     uploadLocalToCloud, discardLocal,
+    prefs, setPref,
   } = useApp();
 
   const [section, setSection] = useState<Section>('menu');
@@ -191,6 +193,38 @@ export default function Options() {
         </div>
       )}
 
+      {/* PREFERENCES */}
+      <div className="border border-t-border rounded bg-t-card p-4 space-y-3">
+        <div className="text-t-muted text-xs tracking-widest">── PREFERENCES ──</div>
+
+        <label className="flex items-center justify-between text-sm cursor-pointer">
+          <span className="text-t-text">Ask for notes after each session</span>
+          <input
+            type="checkbox"
+            checked={prefs.askNotes}
+            onChange={e => setPref('askNotes', e.target.checked)}
+            className="accent-t-green w-4 h-4"
+          />
+        </label>
+
+        <label className="flex items-center justify-between text-sm cursor-pointer">
+          <span className="text-t-text">Play sound when daily goal is met</span>
+          <input
+            type="checkbox"
+            checked={prefs.soundOnGoal}
+            onChange={e => setPref('soundOnGoal', e.target.checked)}
+            className="accent-t-green w-4 h-4"
+          />
+        </label>
+
+        {prefs.soundOnGoal && (
+          <button onClick={chime}
+            className="w-full py-1 text-xs rounded border border-t-border text-t-muted hover:border-t-green hover:text-t-green">
+            ♪ test sound
+          </button>
+        )}
+      </div>
+
       {/* HISTORY EDITOR */}
       {activeBaby && (
         <div className="border border-t-border rounded bg-t-card p-4 space-y-3">
@@ -210,7 +244,7 @@ export default function Options() {
       )}
 
       <div className="text-t-muted text-xs text-center pt-2">
-        v0.4.0 · {user ? 'cloud' : 'local only'}
+        v0.4.1 · {user ? 'cloud' : 'local only'}
       </div>
     </div>
   );

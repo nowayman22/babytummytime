@@ -39,6 +39,7 @@ export interface Store {
   updateBaby(id: string, name: string): Promise<Baby>;
   deleteBaby(id: string): Promise<void>;
   listSessions(babyId: string, limit?: number): Promise<TummySession[]>;
+  getActiveSession(babyId: string): Promise<TummySession | null>;
   startSession(babyId: string): Promise<TummySession>;
   endSession(id: string, endedAt: string, durationSeconds: number): Promise<void>;
   updateSession(id: string, patch: Partial<Pick<TummySession, 'started_at' | 'ended_at' | 'duration_seconds' | 'notes'>>): Promise<void>;

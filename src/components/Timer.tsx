@@ -1,5 +1,4 @@
 import BunnyAnimation from './BunnyAnimation';
-import { useTimer } from '../hooks/useTimer';
 import { useApp } from '../context/AppContext';
 
 function fmt(s: number) {
@@ -9,15 +8,12 @@ function fmt(s: number) {
   return `${h}:${m}:${sec}`;
 }
 
-interface Props {
-  todaySeconds: number;
-  onSessionSaved: () => void;
-}
-
-export default function Timer({ todaySeconds, onSessionSaved }: Props) {
-  const { activeBaby, goal } = useApp();
-  const { isRunning, elapsed, showNotes, notes, setNotes, toggle, saveNote, skipNote, error } =
-    useTimer(onSessionSaved);
+export default function Timer() {
+  const {
+    activeBaby, goal,
+    isRunning, elapsed, showNotes, notes, setNotes,
+    toggleTimer, saveNote, skipNote, timerError, todaySeconds,
+  } = useApp();
 
   const goalMinutes = goal?.target_minutes ?? 30;
   const goalSecs   = goalMinutes * 60;
@@ -69,7 +65,7 @@ export default function Timer({ todaySeconds, onSessionSaved }: Props) {
 
       {!showNotes && (
         <button
-          onClick={toggle} disabled={!activeBaby}
+          onClick={toggleTimer} disabled={!activeBaby}
           className="px-12 sm:px-16 py-5 sm:py-4 rounded font-mono text-xl sm:text-lg tracking-widest transition-all duration-200 active:scale-95"
           style={{
             background: isRunning ? '#1a0a0a' : '#0a1a10',
@@ -89,7 +85,7 @@ export default function Timer({ todaySeconds, onSessionSaved }: Props) {
         </div>
       )}
 
-      {error && <div className="text-t-red text-sm border border-t-red rounded px-4 py-2">⚠ {error}</div>}
+      {timerError && <div className="text-t-red text-sm border border-t-red rounded px-4 py-2">⚠ {timerError}</div>}
 
       <div className="w-full max-w-md border border-t-border rounded p-4 bg-t-card font-mono text-sm">
         <div className="flex justify-between text-t-muted text-xs mb-2">

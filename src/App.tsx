@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { format, startOfDay, endOfDay } from 'date-fns';
+import { useState } from 'react';
+import { format } from 'date-fns';
 import { AppProvider, useApp } from './context/AppContext';
 import Timer from './components/Timer';
 import SessionList from './components/SessionList';
@@ -16,23 +16,8 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 function AppInner() {
-  const { activeBaby, store, user, authLoading, refreshKey, pendingMigration } = useApp();
-  const [tab, setTab]                 = useState<Tab>('timer');
-  const [todaySeconds, setTodaySeconds] = useState(0);
-
-  useEffect(() => {
-    if (!activeBaby) { setTodaySeconds(0); return; }
-    const today = new Date();
-    store.listSessions(activeBaby.id, 500).then(sessions => {
-      const total = sessions
-        .filter(s => {
-          const t = new Date(s.started_at);
-          return t >= startOfDay(today) && t <= endOfDay(today);
-        })
-        .reduce((a, s) => a + (s.duration_seconds ?? 0), 0);
-      setTodaySeconds(total);
-    });
-  }, [activeBaby, store, refreshKey]);
+  const { activeBaby, user, authLoading, pendingMigration, isRunning } = useApp();
+  const [tab, setTab] = useState<Tab>('timer');
 
   if (authLoading) return (
     <div className="min-h-screen bg-t-bg flex items-center justify-center font-mono text-t-muted">
@@ -67,6 +52,9 @@ function AppInner() {
               borderBottom: tab === t.id ? '2px solid #00ff88' : '2px solid transparent',
             }}>
             {t.label}
+            {t.id === 'timer' && isRunning && tab !== 'timer' && (
+              <span className="absolute top-1 right-2 text-t-green animate-pulse">●</span>
+            )}
             {t.id === 'options' && pendingMigration && (
               <span className="absolute top-1 right-2 text-t-green">●</span>
             )}
@@ -75,7 +63,7 @@ function AppInner() {
       </nav>
 
       <main className="flex-1 overflow-y-auto px-4 max-w-2xl mx-auto w-full">
-        {tab === 'timer'   && <Timer todaySeconds={todaySeconds} onSessionSaved={() => {}} />}
+        {tab === 'timer'   && <Timer />}
         {tab === 'history' && <SessionList />}
         {tab === 'stats'   && <Stats />}
         {tab === 'options' && <Options />}
@@ -84,7 +72,7 @@ function AppInner() {
       <footer className="border-t border-t-border px-4 py-2 flex justify-between text-xs text-t-muted shrink-0">
         <span className="hidden sm:inline">SPACE to start / stop</span>
         <span className="sm:hidden">tap to track</span>
-        <span style={{ color: '#1a3a22' }}>v0.4.0</span>
+        <span style={{ color: '#1a3a22' }}>v0.4.1</span>
       </footer>
     </div>
   );

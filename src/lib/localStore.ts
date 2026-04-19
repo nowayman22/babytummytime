@@ -59,6 +59,12 @@ export function createLocalStore(): Store {
         .slice(0, limit);
     },
 
+    async getActiveSession(babyId) {
+      const open = load<TummySession>(K_SESSIONS).filter(s => s.baby_id === babyId && !s.ended_at);
+      open.sort((a, b) => b.started_at.localeCompare(a.started_at));
+      return open[0] ?? null;
+    },
+
     async startSession(babyId) {
       const sessions = load<TummySession>(K_SESSIONS);
       const s: TummySession = {
